@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../widgets/header.dart';
 import 'work_status_screen.dart';
+import 'work_add_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -28,7 +29,8 @@ class HomeScreen extends StatelessWidget {
                   context,
                   MaterialPageRoute(builder: (context) => const WorkStatusScreen()),
                 );
-              },              child: Stack(
+              },
+              child: Stack(
                 children: [
                   Positioned.fill(
                     child: SvgPicture.asset(
@@ -78,6 +80,12 @@ class HomeScreen extends StatelessWidget {
                       "assets/img/MaskGroup.png",
                       screenWidth,
                       screenHeight * 0.23,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const WorkAddScreen()),
+                        );
+                      },
                     ),
                   ),
                   Positioned(
@@ -90,6 +98,7 @@ class HomeScreen extends StatelessWidget {
                       "assets/img/MaskGroup_5.png",
                       screenWidth,
                       screenHeight * 0.185,
+                      onTap: () {},
                     ),
                   ),
                   Positioned(
@@ -102,6 +111,7 @@ class HomeScreen extends StatelessWidget {
                       "assets/img/MaskGroup_2.png",
                       screenWidth,
                       screenHeight * 0.2,
+                      onTap: () {},
                     ),
                   ),
                   Positioned(
@@ -114,6 +124,7 @@ class HomeScreen extends StatelessWidget {
                       "assets/img/MaskGroup9.png",
                       screenWidth,
                       screenHeight * 0.2,
+                      onTap: () {},
                     ),
                   ),
                   Positioned(
@@ -126,6 +137,7 @@ class HomeScreen extends StatelessWidget {
                       "assets/img/MaskGroup_4.png",
                       screenWidth,
                       screenHeight * 0.165,
+                      onTap: () {},
                     ),
                   ),
                   Positioned(
@@ -139,6 +151,7 @@ class HomeScreen extends StatelessWidget {
                       screenWidth,
                       screenHeight * 0.215,
                       isDialog: true,
+                      onTap: () {},
                     ),
                   ),
                 ],
@@ -166,6 +179,7 @@ class HomeScreen extends StatelessWidget {
       String bgImage,
       double screenWidth,
       double height, {
+        required VoidCallback onTap,
         bool isDialog = false,
       }) {
     return SizedBox(
@@ -191,7 +205,7 @@ class HomeScreen extends StatelessWidget {
             ),
           );
         }
-            : () {},
+            : onTap,
       ),
     );
   }

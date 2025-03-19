@@ -3,9 +3,9 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-import '../widgets/work_grade_widget.dart';
-import '../widgets/work_status_widget.dart';
-import '../widgets/work_people_widget.dart';
+import '../widgets/work_status/work_grade_widget.dart';
+import '../widgets/work_status/work_status_widget.dart';
+import '../widgets/work_status/work_people_widget.dart';
 import '../widgets/header.dart';
 
 class WorkStatusScreen extends StatefulWidget {
