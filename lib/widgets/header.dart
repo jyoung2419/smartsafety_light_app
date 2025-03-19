@@ -28,7 +28,7 @@ class Header extends StatelessWidget {
               IconButton(
                 icon: isHomeScreen
                     ? const Icon(Icons.power_settings_new, color: Colors.white)
-                    : const Icon(Icons.keyboard_arrow_left, color: Color(0xFF33CCC3)),
+                    : const Icon(Icons.keyboard_arrow_left, color: Color(0xFF33CCC3),size: 30),
                 onPressed: () {
                   if (isHomeScreen) {
                     _showLogoutDialog(context);
@@ -43,25 +43,30 @@ class Header extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 18,
-                      color: Colors.white,
+                      color: isHomeScreen ? Colors.white : const Color(0xFF33CCC3),
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 5),
-                  const Text(
-                    "Smart Safety Management System",
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.white70,
+                  if (isHomeScreen)
+                    const SizedBox(height: 5),
+                  if (isHomeScreen)
+                    const Text(
+                      "Smart Safety Management System",
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.white70,
+                      ),
                     ),
-                  ),
                 ],
               ),
 
               IconButton(
-                icon: const Icon(Icons.menu, color: Colors.white),
+                icon: Icon(
+                  Icons.menu,
+                  color: isHomeScreen ? Colors.white : const Color(0xFF33CCC3),
+                ),
                 onPressed: () {
                   Scaffold.of(context).openDrawer();
                 },
