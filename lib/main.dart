@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
-import './screens/home_screen.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:smartsafety_light_app/screens/login_screen.dart';
 
-void main() {
-  runApp(MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: "assets/env/.env");
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -14,7 +19,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           fontFamily: "Pretendard"
       ),
-      home: HomeScreen(), // 초기 화면
+      home: LoginScreen(), // 초기 화면
     );
   }
 }

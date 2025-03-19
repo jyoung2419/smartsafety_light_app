@@ -13,6 +13,7 @@
 migrate_working_dir/
 
 *.env
+assets/env/.env
 android/app/google-services.json
 ios/Runner/GoogleService-Info.plist
 
