@@ -6,7 +6,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class ChooseWorkCategoryWidget extends StatefulWidget {
   final Function(int) onDangerLevelChange;
-  final Function(int) onWorkTypeChange;
+  final Function(String) onWorkTypeChange;
 
   const ChooseWorkCategoryWidget({
     super.key,
@@ -20,7 +20,7 @@ class ChooseWorkCategoryWidget extends StatefulWidget {
 
 class _ChooseWorkCategoryWidgetState extends State<ChooseWorkCategoryWidget> {
   int selectedDangerLevel = 3;
-  int selectedWorkType = 0;
+  String selectedWorkType = "";
   List<Map<String, dynamic>> workTypes = [];
 
   @override
@@ -63,20 +63,14 @@ class _ChooseWorkCategoryWidgetState extends State<ChooseWorkCategoryWidget> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            "작업 종류 선택",
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFFEB5757)),
-          ),
+          const Text("작업 종류 선택", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFFEB5757))),
           const SizedBox(height: 10),
 
           Row(
             children: [
               SvgPicture.asset("assets/svg/work/danger.svg", width: 13, height: 13),
               const SizedBox(width: 5),
-              const Text(
-                "위험 등급",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFFEB5757)),
-              ),
+              const Text("위험 등급", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFFEB5757))),
             ],
           ),
           const SizedBox(height: 10),
@@ -95,10 +89,7 @@ class _ChooseWorkCategoryWidgetState extends State<ChooseWorkCategoryWidget> {
             children: [
               SvgPicture.asset("assets/svg/work/danger.svg", width: 13, height: 13),
               const SizedBox(width: 5),
-              const Text(
-                "작업 종류",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFFEB5757)),
-              ),
+              const Text("작업 종류", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFFEB5757))),
             ],
           ),
           const SizedBox(height: 10),
@@ -111,22 +102,17 @@ class _ChooseWorkCategoryWidgetState extends State<ChooseWorkCategoryWidget> {
               color: Colors.white,
             ),
             child: DropdownButtonHideUnderline(
-              child: DropdownButton<int>(
+              child: DropdownButton<String>(
                 isExpanded: true,
-                value: selectedWorkType,
+                value: selectedWorkType.isEmpty ? null : selectedWorkType,
                 icon: const Icon(Icons.arrow_drop_down, color: Colors.black),
-                items: [
-                  const DropdownMenuItem<int>(
-                    value: 0,
-                    child: Text("선택", style: TextStyle(color: Colors.grey)),
-                  ),
-                  ...workTypes.map<DropdownMenuItem<int>>((type) {
-                    return DropdownMenuItem<int>(
-                      value: type['value'] as int,
-                      child: Text(type['label']),
-                    );
-                  }).toList(),
-                ],
+                hint: const Text("선택", style: TextStyle(color: Colors.grey)),
+                items: workTypes.map<DropdownMenuItem<String>>((type) {
+                  return DropdownMenuItem<String>(
+                    value: type['label'],
+                    child: Text(type['label']),
+                  );
+                }).toList(),
                 onChanged: (value) {
                   setState(() {
                     selectedWorkType = value!;

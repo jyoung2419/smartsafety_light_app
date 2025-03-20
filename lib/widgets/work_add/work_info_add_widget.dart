@@ -8,6 +8,7 @@ class WorkInfoAddWidget extends StatefulWidget {
   final Function(DateTime) onEndDateChange;
   final Function(String) onWorkPlaceChange;
   final Function(String) onWorkContentChange;
+  final Function(Map<String, dynamic>) onSubmitWork; // 작업 승인 요청 시 호출
 
   const WorkInfoAddWidget({
     super.key,
@@ -16,6 +17,7 @@ class WorkInfoAddWidget extends StatefulWidget {
     required this.onEndDateChange,
     required this.onWorkPlaceChange,
     required this.onWorkContentChange,
+    required this.onSubmitWork,
   });
 
   @override
@@ -29,25 +31,40 @@ class _WorkInfoAddWidgetState extends State<WorkInfoAddWidget> {
   DateTime startDate = DateTime.now();
   DateTime endDate = DateTime.now();
 
-  Future<void> _selectDate(BuildContext context, bool isStart) async {
-    final DateTime? picked = await showDatePicker(
+  Future<void> _selectDateTime(BuildContext context, bool isStart) async {
+    final DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: isStart ? startDate : endDate,
       firstDate: DateTime(2020),
       lastDate: DateTime(2030),
     );
 
-    if (picked != null) {
-      setState(() {
-        if (isStart) {
-          startDate = picked;
-          widget.onStartDateChange(picked);
-        } else {
-          endDate = picked;
-          widget.onEndDateChange(picked);
-        }
-      });
-    }
+    if (pickedDate == null) return;
+
+    final TimeOfDay? pickedTime = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.fromDateTime(isStart ? startDate : endDate),
+    );
+
+    if (pickedTime == null) return;
+
+    final DateTime pickedDateTime = DateTime(
+      pickedDate.year,
+      pickedDate.month,
+      pickedDate.day,
+      pickedTime.hour,
+      pickedTime.minute,
+    );
+
+    setState(() {
+      if (isStart) {
+        startDate = pickedDateTime;
+        widget.onStartDateChange(pickedDateTime);
+      } else {
+        endDate = pickedDateTime;
+        widget.onEndDateChange(pickedDateTime);
+      }
+    });
   }
 
   @override
@@ -121,13 +138,17 @@ class _WorkInfoAddWidgetState extends State<WorkInfoAddWidget> {
         decoration: InputDecoration(
           hintText: hintText,
           hintStyle: const TextStyle(color: Colors.grey),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(5),
-            borderSide: BorderSide(color: Colors.grey.shade400),
-          ),
           filled: true,
           fillColor: Colors.white,
           contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(5),
+            borderSide: const BorderSide(color: Colors.grey),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(5),
+            borderSide: const BorderSide(color: Colors.grey),
+          ),
         ),
       ),
     );
@@ -143,13 +164,17 @@ class _WorkInfoAddWidgetState extends State<WorkInfoAddWidget> {
         decoration: InputDecoration(
           hintText: hintText,
           hintStyle: const TextStyle(color: Colors.grey),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(5),
-            borderSide: BorderSide(color: Colors.grey.shade400),
-          ),
           filled: true,
           fillColor: Colors.white,
           contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(5),
+            borderSide: const BorderSide(color: Colors.grey),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(5),
+            borderSide: const BorderSide(color: Colors.grey),
+          ),
         ),
       ),
     );
@@ -157,7 +182,7 @@ class _WorkInfoAddWidgetState extends State<WorkInfoAddWidget> {
 
   Widget _buildDatePicker(BuildContext context, DateTime selectedDate, bool isStart) {
     return GestureDetector(
-      onTap: () => _selectDate(context, isStart),
+      onTap: () => _selectDateTime(context, isStart),
       child: Container(
         padding: const EdgeInsets.symmetric( vertical: 12),
         decoration: BoxDecoration(

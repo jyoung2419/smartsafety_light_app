@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:smartsafety_light_app/screens/login_screen.dart';
 
 Future<void> main() async {
@@ -17,9 +18,17 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: '스마트 안전 관리 시스템',
       theme: ThemeData(
-          fontFamily: "Pretendard"
+        fontFamily: "Pretendard",
       ),
       home: LoginScreen(), // 초기 화면
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: [
+        Locale('ko', 'KR'),
+      ],
     );
   }
 }

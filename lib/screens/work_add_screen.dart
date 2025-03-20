@@ -21,6 +21,28 @@ class _WorkAddScreenState extends State<WorkAddScreen> {
   DateTime endDate = DateTime.now();
   String workPlace = "";
   String workContent = "";
+  int dangerState = 3;
+  String dname = "";
+
+  String formatDateTime(DateTime dateTime) {
+    return DateFormat('yyyyMMddHHmmss').format(dateTime);
+  }
+
+  // 서버 전송 로직
+  void submitWork() {
+    final workData = {
+      "WNAME": workName,
+      "WSTART": formatDateTime(startDate),
+      "WEND": formatDateTime(endDate),
+      "WPLACE": workPlace,
+      "WCONTENT": workContent,
+      "DANGER_STATE": dangerState,
+      "DNAME": dname,
+    };
+
+    print("서버 전송 데이터: $workData");
+    // 실제 API 요청 로직 추가 (ex: HTTP POST 요청)
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,12 +61,8 @@ class _WorkAddScreenState extends State<WorkAddScreen> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   ChooseWorkCategoryWidget(
-                    onDangerLevelChange: (int level) {
-                      print("선택한 위험 등급: $level");
-                    },
-                    onWorkTypeChange: (int type) {
-                      print("선택한 작업 종류: $type");
-                    },
+                    onDangerLevelChange: (level) => setState(() => dangerState = level),
+                    onWorkTypeChange: (type) => setState(() => dname = type),
                   ),
                   const SizedBox(height: 20),
                   WorkInfoAddWidget(
@@ -53,6 +71,7 @@ class _WorkAddScreenState extends State<WorkAddScreen> {
                     onEndDateChange: (date) => setState(() => endDate = date),
                     onWorkPlaceChange: (value) => setState(() => workPlace = value),
                     onWorkContentChange: (value) => setState(() => workContent = value),
+                    onSubmitWork: (workData) => submitWork(),
                   ),
                   const SizedBox(height: 20),
                   // const WorkerInfoAddWidget(),
@@ -76,7 +95,7 @@ class _WorkAddScreenState extends State<WorkAddScreen> {
                       },
                       child: const Text(
                         "작업 승인 요청",
-                        style: TextStyle(fontSize: 18, color: Colors.white),
+                        style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold),
                       ),
                     ),
                   ),
