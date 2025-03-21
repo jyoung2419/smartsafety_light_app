@@ -184,7 +184,7 @@ class _WorkInfoAddWidgetState extends State<WorkInfoAddWidget> {
     return GestureDetector(
       onTap: () => _selectDateTime(context, isStart),
       child: Container(
-        padding: const EdgeInsets.symmetric( vertical: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
           border: Border.all(color: Colors.grey.shade400, width: 1),
@@ -194,7 +194,7 @@ class _WorkInfoAddWidgetState extends State<WorkInfoAddWidget> {
           children: [
             Text(
               DateFormat('yyyy. MM. dd HH:mm').format(selectedDate),
-              style: const TextStyle(fontSize: 16, color: Colors.black),
+              style: const TextStyle(fontSize: 13, color: Colors.black),
             ),
             const SizedBox(width: 5),
             SvgPicture.asset("assets/svg/calendar_solid.svg", width: 16, height: 16, color: Color(0xFF2D9CDB)),

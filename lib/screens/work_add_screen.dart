@@ -3,7 +3,8 @@ import '../widgets/header.dart';
 import 'package:intl/intl.dart';
 import '../widgets/work_add/choose_work_category_widget.dart';
 import '../widgets/work_add/work_info_add_widget.dart';
-import '../widgets/work_add/worker_info_add_widget.dart';
+import '../widgets/work_add/worker_add/worker_info_add_widget.dart';
+import '../widgets/work_add/worker_add/worker_edu_modal.dart';
 import '../widgets/work_add/work_picture_add_widget.dart';
 import '../widgets/work_add/choose_manager_widget.dart';
 
@@ -23,6 +24,11 @@ class _WorkAddScreenState extends State<WorkAddScreen> {
   String workContent = "";
   int dangerState = 3;
   String dname = "";
+  String? workerId;
+  String? workerName;
+  String? workerTel;
+
+  List<Map<String, dynamic>> workers = [];
 
   String formatDateTime(DateTime dateTime) {
     return DateFormat('yyyyMMddHHmmss').format(dateTime);
@@ -30,6 +36,17 @@ class _WorkAddScreenState extends State<WorkAddScreen> {
 
   // 서버 전송 로직
   void submitWork() {
+    final List<String> userIdList = workers.map((w) => w["USERID"].toString()).toList();
+
+    final List<String> eduList = workers
+        .expand((w) => (w["educationList"] ?? []))
+        .cast<String>()
+        .toSet()
+        .toList();
+
+    print("👷 작업자 ID 목록: $userIdList");
+    print("📚 교육 항목 목록: $eduList");
+
     final workData = {
       "WNAME": workName,
       "WSTART": formatDateTime(startDate),
@@ -38,10 +55,28 @@ class _WorkAddScreenState extends State<WorkAddScreen> {
       "WCONTENT": workContent,
       "DANGER_STATE": dangerState,
       "DNAME": dname,
+      "USERID": workerId,
+      "WUSER": workerName,
+      "WSTATE": 0,
+      "WTEL": workerTel,
+      "safetyEducationList": eduList,
+      "REGDATE": formatDateTime(DateTime.now()),
+      // 기타 DNUM, TYPE_STATE, WSTATE 등도 필요 시 추가
     };
 
     print("서버 전송 데이터: $workData");
     // 실제 API 요청 로직 추가 (ex: HTTP POST 요청)
+    // POST 요청 예시
+    // final uri = Uri.parse('${dotenv.env["BASE_URL"]}:${dotenv.env["PORT"]}/work');
+    // final response = await http.post(uri, body: jsonEncode(workData), headers: {
+    //   "Content-Type": "application/json",
+    // });
+  }
+
+  // QR코드 촬영 화면으로 이동
+  void navigateToQRCode() {
+    print("QR코드 촬영 화면 이동");
+    // TODO: QR코드 촬영 페이지 연결
   }
 
   @override
@@ -74,8 +109,14 @@ class _WorkAddScreenState extends State<WorkAddScreen> {
                     onSubmitWork: (workData) => submitWork(),
                   ),
                   const SizedBox(height: 20),
-                  // const WorkerInfoAddWidget(),
-                  // const SizedBox(height: 20),
+                  WorkerInfoAddWidget(
+                    onWorkerIdChange: (id) => setState(() => workerId = id),
+                    onWorkerNameChange: (name) => setState(() => workerName = name),
+                    onWorkerTelChange: (tel) => setState(() => workerTel = tel),
+                    navigateToQRCode: navigateToQRCode,
+                    onWorkerConfirmed: (list) => setState(() => workers = list),
+                  ),
+                  const SizedBox(height: 20),
                   // const WorkPictureAddWidget(),
                   // const SizedBox(height: 20),
                   // const ChooseManagerWidget(),
