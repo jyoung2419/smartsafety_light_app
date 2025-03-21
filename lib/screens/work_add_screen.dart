@@ -1,10 +1,11 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import '../widgets/header.dart';
 import 'package:intl/intl.dart';
 import '../widgets/work_add/choose_work_category_widget.dart';
 import '../widgets/work_add/work_info_add_widget.dart';
 import '../widgets/work_add/worker_add/worker_info_add_widget.dart';
-import '../widgets/work_add/worker_add/worker_edu_modal.dart';
 import '../widgets/work_add/work_picture_add_widget.dart';
 import '../widgets/work_add/choose_manager_widget.dart';
 
@@ -29,6 +30,7 @@ class _WorkAddScreenState extends State<WorkAddScreen> {
   String? workerTel;
 
   List<Map<String, dynamic>> workers = [];
+  List<File> workImages = []; // ✅ 작업 이미지 상태
 
   String formatDateTime(DateTime dateTime) {
     return DateFormat('yyyyMMddHHmmss').format(dateTime);
@@ -44,8 +46,8 @@ class _WorkAddScreenState extends State<WorkAddScreen> {
         .toSet()
         .toList();
 
-    print("👷 작업자 ID 목록: $userIdList");
-    print("📚 교육 항목 목록: $eduList");
+    // print("👷 작업자 ID 목록: $userIdList");
+    // print("📚 교육 항목 목록: $eduList");
 
     final workData = {
       "WNAME": workName,
@@ -65,12 +67,22 @@ class _WorkAddScreenState extends State<WorkAddScreen> {
     };
 
     print("서버 전송 데이터: $workData");
-    // 실제 API 요청 로직 추가 (ex: HTTP POST 요청)
-    // POST 요청 예시
-    // final uri = Uri.parse('${dotenv.env["BASE_URL"]}:${dotenv.env["PORT"]}/work');
-    // final response = await http.post(uri, body: jsonEncode(workData), headers: {
-    //   "Content-Type": "application/json",
-    // });
+
+    // var uri = Uri.parse('${dotenv.env["BASE_URL"]}:${dotenv.env["PORT"]}/smartSafetyListInsert');
+    // var request = http.MultipartRequest('POST', uri);
+    // request.fields['data'] = jsonEncode(workData);
+    //
+    // for (var file in workImages) {
+    //   request.files.add(await http.MultipartFile.fromPath('images', file.path));
+    // }
+    //
+    // final response = await request.send();
+    // if (response.statusCode == 200) {
+    //   print("✅ 작업 등록 완료");
+    // } else {
+    //   print("❌ 등록 실패: ${response.statusCode}");
+    // }
+    //
   }
 
   // QR코드 촬영 화면으로 이동
@@ -117,7 +129,12 @@ class _WorkAddScreenState extends State<WorkAddScreen> {
                     onWorkerConfirmed: (list) => setState(() => workers = list),
                   ),
                   const SizedBox(height: 20),
-                  // const WorkPictureAddWidget(),
+                  WorkPictureAddWidget(
+                    onImageSelected: (List<File> selectedImages) {
+                      setState(() => workImages = selectedImages);
+                    },
+                  ),
+                  const SizedBox(height: 20),
                   // const SizedBox(height: 20),
                   // const ChooseManagerWidget(),
                   // const SizedBox(height: 30),
