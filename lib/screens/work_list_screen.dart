@@ -29,7 +29,7 @@ class _WorkListScreenState extends State<WorkListScreen> {
             Column(
               children: [
                 const Header(
-                  title: "작업 등록",
+                  title: "작업 조회",
                   backgroundColor: Color(0xFFF2F2F2),
                 ),
                 Padding(
@@ -88,13 +88,12 @@ class _WorkListScreenState extends State<WorkListScreen> {
                 Expanded(
                   child: category == 0
                       ? const WorkListWidget()
-                      // : const WorkHisListWidget(),
-                    : const WorkListWidget()
+                      : const WorkHisListWidget(),
                 ),
               ],
             ),
             if (showDetail)
-              const WorkDetailWidget(), // Stack 위에 겹쳐서 보여짐
+              const WorkDetailWidget(),
           ],
         ),
       ),

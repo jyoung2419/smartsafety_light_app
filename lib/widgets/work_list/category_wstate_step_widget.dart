@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 
 class CategoryWstateStepWidget extends StatelessWidget {
   final int category;
-  final int categoryWState;
-  final Function(int dstate, int wstate) onCategoryChanged;
+  final int? categoryWState;
+  final Function(int dstate, [int? wstate]) onCategoryChanged;
   final double height;
 
   const CategoryWstateStepWidget({
     super.key,
     required this.category,
-    required this.categoryWState,
+    this.categoryWState,
     required this.onCategoryChanged,
     this.height = 50,
   });
@@ -61,7 +61,6 @@ class CategoryWstateStepWidget extends StatelessWidget {
   }
 }
 
-// HEX 문자열 → Color 객체 변환 유틸
 class HexColor extends Color {
   HexColor(final int hexColor) : super(hexColor);
 

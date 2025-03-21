@@ -32,8 +32,8 @@ class _WorkListWidgetState extends State<WorkListWidget> {
     });
   }
 
-  void onCategoryPressed(int dstate, int wstate) {
-    fetchList(dstate, wstate);
+  void onCategoryPressed(int dstate, [int? wstate]) {
+    fetchList(dstate, wstate ?? 0); // null일 경우 0으로 처리
   }
 
   @override
@@ -49,7 +49,7 @@ class _WorkListWidgetState extends State<WorkListWidget> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text("위험 등급", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              const Text("위험 등급", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
               Text("총 ${workList.length}건", style: const TextStyle(fontSize: 16, color: Colors.grey)),
             ],
           ),
@@ -61,8 +61,8 @@ class _WorkListWidgetState extends State<WorkListWidget> {
         ),
         const SizedBox(height: 10),
         const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10),
-          child: Text("작업 상태", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          padding: EdgeInsets.only(bottom: 10.0, left: 10, right: 10),
+          child: Text("작업 상태", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
         ),
         CategoryWstateStepWidget(
           category: category,

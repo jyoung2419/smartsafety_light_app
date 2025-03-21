@@ -70,6 +70,7 @@ class WorkListProvider with ChangeNotifier {
     }
   }
 
+  // 작업 상세 조회 (완료)
   Future<void> fetchCompletedWorkDetail(String wnum) async {
     final url = Uri.parse('$apiBase/smartSafetyDetailHis');
     final response = await http.post(

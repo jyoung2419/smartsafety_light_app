@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 
 class CategoryWstateDangerWidget extends StatelessWidget {
   final int category;
-  final int categoryWState;
-  final Function(int dstate, int wstate) onCategoryChanged;
+  final int? categoryWState;
+  final Function(int dstate, [int? wstate]) onCategoryChanged;
   final double height;
 
   const CategoryWstateDangerWidget({
     super.key,
     required this.category,
-    required this.categoryWState,
+    this.categoryWState,
     required this.onCategoryChanged,
     this.height = 50,
   });
@@ -31,7 +31,7 @@ class CategoryWstateDangerWidget extends StatelessWidget {
       String label,
       int value,
       int selected,
-      int wstate,
+      int? wstate,
       String colorHex,
       ) {
     final bool isSelected = value == selected;
