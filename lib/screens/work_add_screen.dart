@@ -28,6 +28,7 @@ class _WorkAddScreenState extends State<WorkAddScreen> {
   String? workerId;
   String? workerName;
   String? workerTel;
+  String? managerUserId;
 
   List<Map<String, dynamic>> workers = [];
   List<File> workImages = []; // ✅ 작업 이미지 상태
@@ -63,7 +64,7 @@ class _WorkAddScreenState extends State<WorkAddScreen> {
       "WTEL": workerTel,
       "safetyEducationList": eduList,
       "REGDATE": formatDateTime(DateTime.now()),
-      // 기타 DNUM, TYPE_STATE, WSTATE 등도 필요 시 추가
+      "MUSER": managerUserId,
     };
 
     print("서버 전송 데이터: $workData");
@@ -135,9 +136,10 @@ class _WorkAddScreenState extends State<WorkAddScreen> {
                     },
                   ),
                   const SizedBox(height: 20),
-                  // const SizedBox(height: 20),
-                  // const ChooseManagerWidget(),
-                  // const SizedBox(height: 30),
+                  ChooseManagerWidget(
+                    onManagerSelected: (id) => setState(() => managerUserId = id),
+                  ),
+                  const SizedBox(height: 20),
                   SizedBox(
                     width: double.infinity,
                     height: 50,
