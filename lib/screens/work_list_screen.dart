@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../widgets/work_list/work_list_widget.dart';
-import '../widgets/work_list/work_his_list_widget.dart';
-import '../widgets/work_list/work_detail_widget.dart';
+import '../widgets/workList/work_list_widget.dart';
+import '../widgets/workList/work_his_list_widget.dart';
+import '../widgets/workList/work_detail_widget.dart';
 import '../widgets/header.dart';
 import '../providers/work_list_provider.dart';
 

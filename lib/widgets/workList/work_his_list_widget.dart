@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../providers/work_list_provider.dart';
 import '../../../models/completed_work.dart';
-import '../work_list/work_his_card.dart';
-import '../work_list/category_wstate_danger_widget.dart';
+import '../workList/work_his_card.dart';
+import '../workList/category_wstate_danger_widget.dart';
 
 class WorkHisListWidget extends StatefulWidget {
   const WorkHisListWidget({super.key});

@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import '../widgets/header.dart';
 import 'package:intl/intl.dart';
-import '../widgets/work_add/choose_work_category_widget.dart';
-import '../widgets/work_add/work_info_add_widget.dart';
-import '../widgets/work_add/worker_add/worker_info_add_widget.dart';
-import '../widgets/work_add/work_picture_add_widget.dart';
-import '../widgets/work_add/choose_manager_widget.dart';
+import '../widgets/workAdd/choose_work_category_widget.dart';
+import '../widgets/workAdd/work_info_add_widget.dart';
+import '../widgets/workAdd/worker_add/worker_info_add_widget.dart';
+import '../widgets/workAdd/work_picture_add_widget.dart';
+import '../widgets/workAdd/choose_manager_widget.dart';
 
 
 class WorkAddScreen extends StatefulWidget {
