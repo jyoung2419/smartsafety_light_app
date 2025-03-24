@@ -9,6 +9,11 @@ class WorkListProvider with ChangeNotifier {
   List<CompletedWork> completedWorkList = [];
 
   Map<String, dynamic>? workDetail; // 작업 상세정보
+  List<Map<String, dynamic>> photoBeforeList = []; // 작업 전 사진
+  List<Map<String, dynamic>> photoAfterList = [];  // 작업 후 사진
+  Map<String, dynamic>? signData; // 서명 데이터
+  List<Map<String, dynamic>> educationList = []; // 교육 내역
+
   bool detailVisible = false;
 
   final String baseUrl = dotenv.env['BASE_URL'] ?? 'http://localhost';
@@ -88,7 +93,75 @@ class WorkListProvider with ChangeNotifier {
     }
   }
 
+  // 작업 전 사진 조회
+  Future<void> fetchPhotoBefore(String wnum) async {
+    final url = Uri.parse('$apiBase/smartSafetyDetailPhoto');
+    final response = await http.post(
+      url,
+      headers: { 'Content-Type': 'application/json' },
+      body: jsonEncode({ 'wnum': wnum }),
+    );
 
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      photoBeforeList = List<Map<String, dynamic>>.from(jsonDecode(response.body));
+      notifyListeners();
+    } else {
+      debugPrint('작업 전 사진 조회 실패: ${response.statusCode}');
+    }
+  }
+
+  // 작업 후 사진 조회
+  Future<void> fetchPhotoAfter(String wnum) async {
+    final url = Uri.parse('$apiBase/smartSafetyDetailPhotoAfter');
+    final response = await http.post(
+      url,
+      headers: { 'Content-Type': 'application/json' },
+      body: jsonEncode({ 'wnum': wnum }),
+    );
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      photoAfterList = List<Map<String, dynamic>>.from(jsonDecode(response.body));
+      notifyListeners();
+    } else {
+      debugPrint('작업 후 사진 조회 실패: ${response.statusCode}');
+    }
+  }
+
+  // 서명 이미지 조회
+  Future<void> fetchSign(String wnum) async {
+    final url = Uri.parse('$apiBase/smartSafetyDetailSign');
+    final response = await http.post(
+      url,
+      headers: { 'Content-Type': 'application/json' },
+      body: jsonEncode({ 'wnum': wnum }),
+    );
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      signData = Map<String, dynamic>.from(jsonDecode(response.body));
+      notifyListeners();
+    } else {
+      debugPrint('서명 이미지 조회 실패: ${response.statusCode}');
+    }
+  }
+
+  // 교육 내역 조회
+  Future<void> fetchEducationDetail(String num) async {
+    final url = Uri.parse('$apiBase/safetyEducationDetail');
+    final response = await http.post(
+      url,
+      headers: { 'Content-Type': 'application/json' },
+      body: jsonEncode({ 'num': num }),
+    );
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      educationList = List<Map<String, dynamic>>.from(jsonDecode(response.body));
+      notifyListeners();
+    } else {
+      debugPrint('교육 내역 조회 실패: ${response.statusCode}');
+    }
+  }
+
+  // 상세창 숨기기
   void hideDetail() {
     detailVisible = false;
     notifyListeners();
