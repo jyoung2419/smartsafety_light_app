@@ -170,9 +170,9 @@ class _WorkerEduModalState extends State<WorkerEduModal> {
                         final String filePath = await SignatureUtil.saveSignatureToFile(signatureBytes);
                         print("📁 서명 파일 저장 완료: $filePath");
                         final confirmedWorker = {
-                          "USERID": widget.worker["value"],
-                          "WUSER": widget.worker["label"],
-                          "WTEL": widget.worker["tel"],
+                          "WORKERID": widget.worker["value"],
+                          "WORKERNAME": widget.worker["label"],
+                          "TEL": widget.worker["tel"],
                           "signPath": filePath,
                           "educationList": checkedItems,
                         };

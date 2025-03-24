@@ -7,6 +7,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../utils/secure_storage_util.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'home_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -83,6 +84,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
         if (token != null) {
           await SecureStorageUtil.saveToken(token);
+
+          final prefs = await SharedPreferences.getInstance();
+          await prefs.setString('loginUserId', userInfo['USERID']);
+          await prefs.setString('loginUserName', userInfo['USERNAME']);
+          await prefs.setString('loginUserTel', userInfo['TEL'] ?? "");
+
           _navigateToHome();
         } else {
           _showErrorDialog("로그인 실패: 서버에서 토큰을 제공하지 않았습니다.");

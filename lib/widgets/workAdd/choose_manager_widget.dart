@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class ChooseManagerWidget extends StatefulWidget {
-  final Function(String) onManagerSelected;
+  final Function(String id, String name, String tel) onManagerSelected;
 
   const ChooseManagerWidget({super.key, required this.onManagerSelected});
 
@@ -34,7 +34,8 @@ class _ChooseManagerWidgetState extends State<ChooseManagerWidget> {
         setState(() {
           managerList = data.map<Map<String, String>>((item) => {
             "label": item["label"],
-            "value": item["value"]
+            "value": item["value"],
+            "tel": item["tel"] ?? ""
           }).toList();
         });
       } else {
@@ -72,7 +73,14 @@ class _ChooseManagerWidgetState extends State<ChooseManagerWidget> {
             }).toList(),
             onChanged: (value) {
               setState(() => selectedManager = value);
-              if (value != null) widget.onManagerSelected(value);
+              if (value != null) {
+                final selected = managerList.firstWhere((m) => m["value"] == value);
+                widget.onManagerSelected(
+                  selected["value"] ?? "",
+                  selected["label"] ?? "",
+                  selected["tel"] ?? "",
+                );
+              }
             },
             decoration: const InputDecoration(
               border: OutlineInputBorder(),

@@ -6,8 +6,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class ChooseWorkCategoryWidget extends StatefulWidget {
   final Function(int) onDangerLevelChange;
-  final Function(String) onWorkTypeChange;
-
+  final Function(String, int) onWorkTypeChange;
   const ChooseWorkCategoryWidget({
     super.key,
     required this.onDangerLevelChange,
@@ -117,7 +116,8 @@ class _ChooseWorkCategoryWidgetState extends State<ChooseWorkCategoryWidget> {
                   setState(() {
                     selectedWorkType = value!;
                   });
-                  widget.onWorkTypeChange(value!);
+                  final selected = workTypes.firstWhere((e) => e['label'] == value, orElse: () => {"value": 0});
+                  widget.onWorkTypeChange(value!, selected['value'] ?? 0);
                 },
               ),
             ),

@@ -5,19 +5,13 @@ import 'worker_modal.dart';
 import 'worker_edu_modal.dart';
 
 class WorkerInfoAddWidget extends StatefulWidget {
-  final Function(String) onWorkerIdChange;
-  final Function(String) onWorkerNameChange;
-  final Function(String) onWorkerTelChange;
   final Function() navigateToQRCode;
   final Function(List<Map<String, dynamic>>) onWorkerConfirmed;
 
   const WorkerInfoAddWidget({
     super.key,
-    required this.onWorkerIdChange,
-    required this.onWorkerNameChange,
-    required this.onWorkerTelChange,
     required this.navigateToQRCode,
-    required this.onWorkerConfirmed
+    required this.onWorkerConfirmed,
   });
 
   @override
@@ -44,9 +38,7 @@ class _WorkerInfoAddWidgetState extends State<WorkerInfoAddWidget> {
         workers.add(confirmedWorker);
       });
 
-      widget.onWorkerIdChange(confirmedWorker["USERID"]);
-      widget.onWorkerNameChange(confirmedWorker["WUSER"]);
-      widget.onWorkerTelChange(confirmedWorker["WTEL"]);
+      widget.onWorkerConfirmed(workers);
     }
   }
 
@@ -64,9 +56,7 @@ class _WorkerInfoAddWidgetState extends State<WorkerInfoAddWidget> {
               workers.add(confirmedWorker);
             });
 
-            widget.onWorkerIdChange(confirmedWorker["USERID"]);
-            widget.onWorkerNameChange(confirmedWorker["WUSER"]);
-            widget.onWorkerTelChange(confirmedWorker["WTEL"]);
+            widget.onWorkerConfirmed(workers); // ✅ 전체 workers 리스트 전달
           },
         );
       },
@@ -75,7 +65,8 @@ class _WorkerInfoAddWidgetState extends State<WorkerInfoAddWidget> {
 
   void removeWorker(String targetId) {
     setState(() {
-      workers.removeWhere((worker) => worker["USERID"] == targetId);
+      workers.removeWhere((worker) => worker["WORKERID"] == targetId);
+      widget.onWorkerConfirmed(workers);
     });
   }
 
@@ -148,11 +139,11 @@ class _WorkerInfoAddWidgetState extends State<WorkerInfoAddWidget> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                worker["WUSER"],
+                worker["WORKERNAME"],// 여기수정해야해
                 style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               Text(
-                worker["WTEL"],
+                worker["TEL"],// 여기수정해야해
                 style: const TextStyle(fontSize: 14, color: Colors.grey),
               ),
             ],
@@ -164,7 +155,7 @@ class _WorkerInfoAddWidgetState extends State<WorkerInfoAddWidget> {
 
           IconButton(
             icon: const Icon(Icons.delete, color: Colors.red),
-            onPressed: () => removeWorker(worker["USERID"]),
+            onPressed: () => removeWorker(worker["WORKERID"]),
           ),
         ],
       ),
