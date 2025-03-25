@@ -74,11 +74,6 @@ class _WorkStatusScreenState extends State<WorkStatusScreen> {
   @override
   Widget build(BuildContext context) {
     final double screenHeight = MediaQuery.of(context).size.height;
-    final double padding = 15.0;
-    final double headerHeight = 100.0;
-    final double widgetSpacing = 20.0;
-
-    final double availableHeight = screenHeight - headerHeight - (padding * 2) - (widgetSpacing * 2);
 
     return Scaffold(
       backgroundColor: const Color(0xFFF2F2F2),
@@ -95,25 +90,24 @@ class _WorkStatusScreenState extends State<WorkStatusScreen> {
                 : Column(
               children: [
                 SizedBox(
-                  height: availableHeight * 0.21,
+                  height: screenHeight * 0.2,
                   child: WorkGradeWidget(
                     highRisk: workStatus["one"]!,
                     mediumRisk: workStatus["two"]!,
                     lowRisk: workStatus["three"]!,
                   ),
                 ),
-                const SizedBox(height: 17),
                 SizedBox(
-                  height: availableHeight * 0.37,
+                  height: screenHeight * 0.3,
                   child: WorkStatusWidget(
                     waiting: workStatus["workListWait"]!,
                     inProgress: workStatus["workListIng"]!,
                     completed: workStatus["workListEnd"]!,
                   ),
                 ),
-                const SizedBox(height: 17),
+                const SizedBox(height: 15),
                 SizedBox(
-                  height: availableHeight * 0.37,
+                  height: screenHeight * 0.3,
                   child: WorkPeopleWidget(
                     totalPeople: workStatus["worKPeopleAll"]!,
                     inProgressPeople: workStatus["worKPeopleIng"]!,
