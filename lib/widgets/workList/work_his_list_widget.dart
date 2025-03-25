@@ -39,7 +39,7 @@ class _WorkHisListWidgetState extends State<WorkHisListWidget> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text("위험 등급", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              const Text("위험 등급", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
               Text("총 ${workList.length}건", style: const TextStyle(fontSize: 16, color: Colors.grey)),
             ],
           ),
@@ -52,7 +52,6 @@ class _WorkHisListWidgetState extends State<WorkHisListWidget> {
         Expanded(
           child: ListView.builder(
             itemCount: workList.length,
-            padding: const EdgeInsets.symmetric(horizontal: 10),
             itemBuilder: (context, index) {
               final item = workList[index];
               return GestureDetector(

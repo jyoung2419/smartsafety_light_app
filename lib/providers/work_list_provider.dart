@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -103,7 +104,19 @@ class WorkListProvider with ChangeNotifier {
     );
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-      photoBeforeList = List<Map<String, dynamic>>.from(jsonDecode(response.body));
+      final List<dynamic> rawList = jsonDecode(response.body);
+
+      photoBeforeList = rawList.map<Map<String, dynamic>>((item) {
+        final map = Map<String, dynamic>.from(item);
+        final imageName = map['IMAGENAME'];
+        if (imageName != null && imageName is String) {
+          map['IMAGE_PATH'] = '$apiBase/images/$imageName';
+        } else {
+          map['IMAGE_PATH'] = null;
+        }
+        return map;
+      }).toList();
+
       notifyListeners();
     } else {
       debugPrint('작업 전 사진 조회 실패: ${response.statusCode}');
@@ -120,7 +133,19 @@ class WorkListProvider with ChangeNotifier {
     );
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-      photoAfterList = List<Map<String, dynamic>>.from(jsonDecode(response.body));
+      final List<dynamic> rawList = jsonDecode(response.body);
+
+      photoAfterList = rawList.map<Map<String, dynamic>>((item) {
+        final map = Map<String, dynamic>.from(item);
+        final imageName = map['IMAGENAME'];
+        if (imageName != null && imageName is String) {
+          map['IMAGE_PATH'] = '$apiBase/images/$imageName'; // 경로 설정
+        } else {
+          map['IMAGE_PATH'] = null;
+        }
+        return map;
+      }).toList();
+
       notifyListeners();
     } else {
       debugPrint('작업 후 사진 조회 실패: ${response.statusCode}');
@@ -137,7 +162,23 @@ class WorkListProvider with ChangeNotifier {
     );
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-      signData = Map<String, dynamic>.from(jsonDecode(response.body));
+      final decoded = jsonDecode(response.body);
+
+      if (decoded is List && decoded.isNotEmpty) {
+        final raw = Map<String, dynamic>.from(decoded.first);
+        final imageName = raw['IMAGENAME'];
+
+        if (imageName != null && imageName is String) {
+          raw['SIGN_PATH'] = '$apiBase/images_sign/$imageName';
+        } else {
+          raw['SIGN_PATH'] = null;
+        }
+
+        signData = raw;
+      } else {
+        signData = null;
+      }
+
       notifyListeners();
     } else {
       debugPrint('서명 이미지 조회 실패: ${response.statusCode}');
@@ -158,6 +199,42 @@ class WorkListProvider with ChangeNotifier {
       notifyListeners();
     } else {
       debugPrint('교육 내역 조회 실패: ${response.statusCode}');
+    }
+  }
+
+  // 작업 시작 요청
+  Future<void> startWork(String wnum) async {
+    final url = Uri.parse('$apiBase/workDetailStart');
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'wnum': wnum}),
+    );
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      debugPrint('✅ 작업 시작 성공');
+      await fetchWorkDetail(wnum); // 최신 상태 반영
+    } else {
+      debugPrint('❌ 작업 시작 실패: ${response.statusCode}');
+    }
+  }
+
+  // 작업 완료 요청
+  Future<void> requestWorkEnd(String wnum, List<File> images) async {
+    final url = Uri.parse('$apiBase/workDetailEndRequest');
+    final request = http.MultipartRequest('POST', url);
+    request.fields['wnum'] = wnum;
+
+    for (var file in images) {
+      request.files.add(await http.MultipartFile.fromPath('images', file.path));
+    }
+
+    final response = await request.send();
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      debugPrint('✅ 작업 완료 요청 성공');
+      await fetchWorkDetail(wnum);
+    } else {
+      debugPrint('❌ 작업 완료 요청 실패: ${response.statusCode}');
     }
   }
 

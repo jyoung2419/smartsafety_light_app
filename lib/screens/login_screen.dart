@@ -87,7 +87,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
           final prefs = await SharedPreferences.getInstance();
           await prefs.setString('loginUserId', userInfo['USERID']);
-          await prefs.setString('loginUserName', userInfo['USERNAME']);
+          await prefs.setString('loginUserName', userInfo['USERNM']);
           await prefs.setString('loginUserTel', userInfo['TEL'] ?? "");
 
           _navigateToHome();

@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class ChooseManagerWidget extends StatefulWidget {
-  final Function(String id, String name, String tel) onManagerSelected;
+  final Function(String id, String name, String tel, String power, List<Map<String, String>> allList) onManagerSelected;
 
   const ChooseManagerWidget({super.key, required this.onManagerSelected});
 
@@ -31,12 +31,15 @@ class _ChooseManagerWidgetState extends State<ChooseManagerWidget> {
       final response = await http.get(url);
       if (response.statusCode == 200) {
         final List<dynamic> data = jsonDecode(response.body);
+        final parsed = data.map<Map<String, String>>((item) => {
+          "label": item["label"],
+          "value": item["value"],
+          "tel": item["tel"] ?? "",
+          "power": item["power"]?.toString() ?? ""
+        }).toList();
+
         setState(() {
-          managerList = data.map<Map<String, String>>((item) => {
-            "label": item["label"],
-            "value": item["value"],
-            "tel": item["tel"] ?? ""
-          }).toList();
+          managerList = parsed;
         });
       } else {
         print("감독관 불러오기 실패: ${response.statusCode}");
@@ -79,6 +82,8 @@ class _ChooseManagerWidgetState extends State<ChooseManagerWidget> {
                   selected["value"] ?? "",
                   selected["label"] ?? "",
                   selected["tel"] ?? "",
+                  selected["power"] ?? "",
+                  managerList, // 전체 전달
                 );
               }
             },

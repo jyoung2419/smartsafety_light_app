@@ -8,10 +8,9 @@ import 'package:intl/intl.dart';
 import '../widgets/workAdd/choose_work_category_widget.dart';
 import '../widgets/workAdd/work_info_add_widget.dart';
 import '../widgets/workAdd/worker_add/worker_info_add_widget.dart';
-import '../widgets/work_picture_add_widget.dart';
+import '../widgets/work_photo_upload_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../widgets/workAdd/choose_manager_widget.dart';
-
 
 class WorkAddScreen extends StatefulWidget {
   const WorkAddScreen({super.key});
@@ -31,10 +30,10 @@ class _WorkAddScreenState extends State<WorkAddScreen> {
   String? loginUserId = "";
   String? managerName;
   String? managerTel;
-  String? managerUserId;
 
   List<Map<String, dynamic>> workers = [];
   List<File> _selectedImages = [];
+  List<Map<String, String>> allManagers = [];
 
   String formatDateTime(DateTime dateTime) {
     return DateFormat('yyyyMMddHHmmss').format(dateTime);
@@ -52,7 +51,7 @@ class _WorkAddScreenState extends State<WorkAddScreen> {
       loginUserId = prefs.getString('loginUserId') ?? '';
     });
   }
-  // 서버 전송 로직
+
   Future<void> handleSubmitWork() async {
     try {
       final List<String> userIdList = workers.map((w) => w["WORKERID"].toString()).toList();
@@ -61,6 +60,11 @@ class _WorkAddScreenState extends State<WorkAddScreen> {
           .cast<String>()
           .toSet()
           .toList();
+
+      final muser = allManagers.firstWhere(
+              (m) => m["power"] == "3",
+          orElse: () => {"value": ""}
+      )["value"];
 
       final workData = {
         "WNAME": workName,
@@ -83,13 +87,13 @@ class _WorkAddScreenState extends State<WorkAddScreen> {
         "workManIdx": userIdList,
         "safetyEducationList": eduList,
         "REGDATE": formatDateTime(DateTime.now()),
-        "MUSER": managerUserId,
+        "MUSER": muser,
       };
+
       print("📦 전송할 workData: ${jsonEncode(workData)}");
 
       final uri = Uri.parse('${dotenv.env["BASE_URL"]}:${dotenv.env["PORT"]}/smartSafetyListInsert');
       final request = http.MultipartRequest('POST', uri);
-
       request.fields['data'] = jsonEncode(workData);
 
       for (var file in _selectedImages) {
@@ -104,10 +108,9 @@ class _WorkAddScreenState extends State<WorkAddScreen> {
 
         print("✅ 작업 등록 완료: WNUM = $wnum");
 
-        // 서명 전송
         await uploadSignImages(
           wnum: wnum,
-          workManIds: workers.map((w) => w["WORKERID"].toString()).toList(),
+          workManIds: userIdList,
           signFiles: workers.map((w) => File(w["signPath"])).toList(),
         );
       } else {
@@ -131,7 +134,7 @@ class _WorkAddScreenState extends State<WorkAddScreen> {
       "workManIdx": workManIds,
     };
 
-    request.fields['data'] = jsonEncode(signData); // JSON으로 묶어 전송
+    request.fields['data'] = jsonEncode(signData);
 
     for (int i = 0; i < signFiles.length; i++) {
       final file = signFiles[i];
@@ -169,10 +172,8 @@ class _WorkAddScreenState extends State<WorkAddScreen> {
     );
   }
 
-  // QR코드 촬영 화면으로 이동
   void navigateToQRCode() {
     print("QR코드 촬영 화면 이동");
-    // TODO: QR코드 촬영 페이지 연결
   }
 
   @override
@@ -181,13 +182,10 @@ class _WorkAddScreenState extends State<WorkAddScreen> {
       backgroundColor: const Color(0xFFF2F2F2),
       body: Column(
         children: [
-          const Header(
-            title: "작업 등록",
-            backgroundColor: const Color(0xFFF2F2F2),
-          ),
+          const Header(title: "작업 등록", backgroundColor: Color(0xFFF2F2F2)),
           Expanded(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -198,7 +196,6 @@ class _WorkAddScreenState extends State<WorkAddScreen> {
                       dnum = num ?? 0;
                     }),
                   ),
-                  const SizedBox(height: 20),
                   const SizedBox(height: 20),
                   WorkInfoAddWidget(
                     onWorkNameChange: (value) => setState(() => workName = value),
@@ -221,11 +218,11 @@ class _WorkAddScreenState extends State<WorkAddScreen> {
                   ),
                   const SizedBox(height: 20),
                   ChooseManagerWidget(
-                    onManagerSelected: (id, name, tel) {
+                    onManagerSelected: (id, name, tel, power, allList) {
                       setState(() {
-                        managerUserId = id;
                         managerName = name;
                         managerTel = tel;
+                        allManagers = allList;
                       });
                     },
                   ),
@@ -236,9 +233,7 @@ class _WorkAddScreenState extends State<WorkAddScreen> {
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF33CCC3),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5),
-                        ),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                       ),
                       onPressed: handleSubmitWork,
                       child: const Text("작업 승인 요청", style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold)),

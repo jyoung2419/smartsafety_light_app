@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../widgets/workList/work_list_widget.dart';
 import '../widgets/workList/work_his_list_widget.dart';
 import '../widgets/workList/workDetail/work_detail_widget.dart';
+import '../widgets/workList/workDetail/work_his_detail_widget.dart';
 import '../widgets/header.dart';
 import '../providers/work_list_provider.dart';
 
@@ -93,7 +94,9 @@ class _WorkListScreenState extends State<WorkListScreen> {
               ],
             ),
             if (showDetail)
-              const WorkDetailWidget(),
+              category == 0
+                  ? const WorkDetailWidget()
+                  : const WorkHisDetailWidget(),
           ],
         ),
       ),
