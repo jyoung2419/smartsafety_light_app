@@ -4,7 +4,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:smartsafety_light_app/providers/work_list_provider.dart';
 import 'package:smartsafety_light_app/screens/login_screen.dart';
-import 'screens/work_list_screen.dart';
+import 'package:smartsafety_light_app/providers/sinmungo_provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,7 +13,7 @@ Future<void> main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => WorkListProvider()),
-        // 다른 Provider도 여기에 추가 가능
+        ChangeNotifierProvider(create: (_) => SinmungoProvider()),
       ],
       child: const MyApp(),
     ),

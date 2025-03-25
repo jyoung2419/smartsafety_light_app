@@ -18,7 +18,6 @@ class Header extends StatelessWidget {
 
     return Column(
       children: [
-        const SizedBox(height: 30),
         Container(
           padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
           color: backgroundColor,

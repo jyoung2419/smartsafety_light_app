@@ -34,7 +34,6 @@ dev_dependencies:
   flutter_lints: ^5.0.0
 
 flutter:
-
   uses-material-design: true
   assets:
     - assets/env/.env
@@ -44,6 +43,8 @@ flutter:
     - assets/svg/home/
     - assets/svg/loginButton/
     - assets/svg/work/
+    - assets/svg/checked.svg
+    - assets/svg/empty.svg
 
   fonts:
     - family: Pretendard
