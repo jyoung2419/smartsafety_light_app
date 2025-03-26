@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../models/sinmungo_model.dart';
 import '../../../providers/sinmungo_provider.dart';
-import '../../screens/sinmungo_detail_screen.dart';
+import '../../screens/sinmungo/sinmungo_detail_screen.dart';
 
 class SinmungoCardWidget extends StatelessWidget {
   final SinmungoModel sinmungo;

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import '../widgets/sinmungo/top_widget.dart';
-import '../widgets/sinmungo/card_list_widget.dart';
-import '../providers/sinmungo_provider.dart';
+import '../../widgets/sinmungo/top_widget.dart';
+import '../../widgets/sinmungo/card_list_widget.dart';
+import '../../providers/sinmungo_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
-import '../widgets/header.dart';
+import '../../widgets/header.dart';
+import 'sinmungo_register_screen.dart';
 
 class SinmungoScreen extends StatefulWidget {
   const SinmungoScreen({super.key});
@@ -53,7 +54,12 @@ class _SinmungoScreenState extends State<SinmungoScreen> {
         padding: const EdgeInsets.all(5), // 여유 공간 추가 시
         child: ElevatedButton(
           onPressed: () {
-            Navigator.pushNamed(context, '/sinmungo/register');
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => SinmungoRegisterScreen(),
+              ),
+            );
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: const Color(0xFF33CCC3),

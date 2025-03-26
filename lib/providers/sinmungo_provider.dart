@@ -57,7 +57,7 @@ class SinmungoProvider with ChangeNotifier {
       for (var img in imgList) {
         final path = img['PATH'];
         if (path != null && path is String) {
-          img['PATH'] = '$apiBase/images/$path';
+          img['PATH'] = '$apiBase/images_safety/$path';
         }
       }
 
@@ -100,7 +100,9 @@ class SinmungoProvider with ChangeNotifier {
     final url = Uri.parse('$apiBase/smartSafetySinmungoInsert');
     final request = http.MultipartRequest('POST', url);
 
-    request.fields['data'] = jsonEncode(data);
+    data.forEach((key, value) {
+      request.fields[key] = value.toString();
+    });
 
     for (var file in images) {
       request.files.add(await http.MultipartFile.fromPath('images', file.path));

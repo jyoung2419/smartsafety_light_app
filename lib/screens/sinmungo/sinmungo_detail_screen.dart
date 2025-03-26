@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../providers/sinmungo_provider.dart';
-import '../../widgets/sinmungo/detail/detail_content_widget.dart';
-import '../../widgets/sinmungo/detail/take_action_widget.dart';
+import '../../../providers/sinmungo_provider.dart';
+import '../../../widgets/sinmungo/detail/detail_content_widget.dart';
+import '../../../widgets/sinmungo/detail/take_action_widget.dart';
 
 class SinmungoDetailScreen extends StatefulWidget {
   final int idx;
@@ -17,7 +17,6 @@ class SinmungoDetailScreen extends StatefulWidget {
   @override
   State<SinmungoDetailScreen> createState() => _SinmungoDetailScreenState();
 }
-
 
 class _SinmungoDetailScreenState extends State<SinmungoDetailScreen> {
   bool _isLoading = true;

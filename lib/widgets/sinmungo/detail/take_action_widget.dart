@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import '../../../providers/sinmungo_provider.dart';
+import '../sinmungo_photo_upload_widget.dart';
 import 'take_action_completed_widget.dart';
 
 class SinmungoTakeActionWidget extends StatefulWidget {
@@ -18,7 +19,7 @@ class _SinmungoTakeActionWidgetState extends State<SinmungoTakeActionWidget> {
   final _measureController = TextEditingController();
   final _relapseController = TextEditingController();
   final _etcController = TextEditingController();
-  final List<File> _images = [];
+  List<File> _pickedImages = [];
   final List<int> _selectedCodes = [];
   DateTime? _repairDate;
 
@@ -31,7 +32,7 @@ class _SinmungoTakeActionWidgetState extends State<SinmungoTakeActionWidget> {
   Future<void> _pickImage() async {
     final picked = await ImagePicker().pickImage(source: ImageSource.camera);
     if (picked != null) {
-      setState(() => _images.add(File(picked.path)));
+      setState(() => _pickedImages.add(File(picked.path)));
     }
   }
 
@@ -62,7 +63,7 @@ class _SinmungoTakeActionWidgetState extends State<SinmungoTakeActionWidget> {
           : DateTime.now().toIso8601String().split('T')[0],
     };
 
-    await Provider.of<SinmungoProvider>(context, listen: false).takeAction(data, _images);
+    await Provider.of<SinmungoProvider>(context, listen: false).takeAction(data, _pickedImages);
     await Provider.of<SinmungoProvider>(context, listen: false).fetchSinmungoDetail(widget.sinmungo['IDX'].toString());
 
     setState(() {});
@@ -207,14 +208,15 @@ class _SinmungoTakeActionWidgetState extends State<SinmungoTakeActionWidget> {
             ],
           ),
           const SizedBox(height: 16),
-          const Text('사진 등록'),
-          Wrap(
-            spacing: 8,
-            children: _images.map((img) => Image.file(img, width: 100, height: 100)).toList(),
-          ),
-          ElevatedButton(
-            onPressed: _pickImage,
-            child: const Text('사진 촬영'),
+          SinmungoPhotoUploadWidget(
+            mode: "false",
+            isEditable: true,
+            initialImages: _pickedImages,
+            onImageSelected: (files) {
+              setState(() {
+                _pickedImages = files;
+              });
+            },
           ),
           const SizedBox(height: 16),
           ElevatedButton(

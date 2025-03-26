@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../providers/sinmungo_provider.dart';
-import 'checkbox_list_widget.dart';
+import 'sinmungo_checkbox_list_widget.dart';
+
 class SinmungoDetailContentWidget extends StatefulWidget {
   final Map<String, dynamic> sinmungo;
   final List<Map<String, dynamic>> imgList;

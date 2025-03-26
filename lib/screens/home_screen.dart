@@ -4,7 +4,7 @@ import '../widgets/header.dart';
 import 'work_status_screen.dart';
 import 'work_add_screen.dart';
 import 'work_list_screen.dart';
-import 'sinmungo_screen.dart';
+import 'sinmungo/sinmungo_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
