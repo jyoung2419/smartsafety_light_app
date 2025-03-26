@@ -26,10 +26,10 @@ class SinmungoTakeActionCompletedWidget extends StatelessWidget {
           _buildTextRow('재발방지대책', measure),
           _buildTextRow('조치사항', relapse),
           const SizedBox(height: 10),
-          const Text('개선유형', style: TextStyle(fontWeight: FontWeight.bold)),
+          const Text('개선유형', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17, color: Color(0xFF2980BA))),
           SinmungoTakeActionCheckboxListWidget(sinmungo: sinmungo),
-          const SizedBox(height: 16),
-          const Text('조치 사진', style: TextStyle(fontWeight: FontWeight.bold)),
+          const SizedBox(height: 5),
+          const Text('조치 사진', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17, color: Color(0xFF2980BA))),
           const SizedBox(height: 8),
           SizedBox(
             height: 100,
@@ -63,7 +63,11 @@ class SinmungoTakeActionCompletedWidget extends StatelessWidget {
         children: [
           SizedBox(
             width: 100,
-            child: Text('$label:', style: const TextStyle(fontWeight: FontWeight.bold)),
+            child: Text(
+              '$label:',
+              style: const TextStyle(inherit: false, fontWeight: FontWeight.bold, fontSize: 15, color: Colors.black,
+              ),
+            ),
           ),
           Expanded(child: Text(value, style: const TextStyle(fontSize: 14))),
         ],

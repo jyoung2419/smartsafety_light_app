@@ -48,6 +48,15 @@ class _SinmungoPhotoUploadWidgetState extends State<SinmungoPhotoUploadWidget> {
     }
   }
 
+  void _removeImage(File file) {
+    if (!widget.isEditable) return;
+
+    setState(() {
+      imageFiles.remove(file);
+    });
+    widget.onImageSelected(imageFiles);
+  }
+
   @override
   Widget build(BuildContext context) {
     final Color borderColor = widget.mode == "register"
@@ -109,6 +118,15 @@ class _SinmungoPhotoUploadWidgetState extends State<SinmungoPhotoUploadWidget> {
                               borderRadius: BorderRadius.circular(5),
                               child: Image.file(file, width: 70, height: 70, fit: BoxFit.cover),
                             ),
+                            if (widget.isEditable)
+                              GestureDetector(
+                                onTap: () => _removeImage(file),
+                                child: const CircleAvatar(
+                                  radius: 10,
+                                  backgroundColor: Colors.black54,
+                                  child: Icon(Icons.close, size: 14, color: Colors.white),
+                                ),
+                              ),
                           ],
                         ),
                       );

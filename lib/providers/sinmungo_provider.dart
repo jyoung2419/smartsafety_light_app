@@ -121,7 +121,11 @@ class SinmungoProvider with ChangeNotifier {
     final url = Uri.parse('$apiBase/smartSafetySinmungoTakeActionRegister');
     final request = http.MultipartRequest('POST', url);
 
-    request.fields['data'] = jsonEncode(data);
+    data.forEach((key, value) {
+      if (value != null) {
+        request.fields[key] = value is List ? value.join(',') : value.toString();
+      }
+    });
 
     for (var file in images) {
       request.files.add(await http.MultipartFile.fromPath('images', file.path));

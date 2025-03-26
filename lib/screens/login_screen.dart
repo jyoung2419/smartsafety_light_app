@@ -67,9 +67,6 @@ class _LoginScreenState extends State<LoginScreen> {
         }),
       );
 
-      print("🔍 서버 응답 코드: ${response.statusCode}");
-      print("🔍 서버 응답 본문: ${response.body}");
-
       if (response.statusCode == 200 || response.statusCode == 201) {
         final List<dynamic> data = jsonDecode(response.body);
 

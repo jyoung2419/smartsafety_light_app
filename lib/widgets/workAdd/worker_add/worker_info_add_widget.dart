@@ -139,11 +139,11 @@ class _WorkerInfoAddWidgetState extends State<WorkerInfoAddWidget> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                worker["WORKERNAME"],// 여기수정해야해
+                worker["WORKERNAME"],
                 style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               Text(
-                worker["TEL"],// 여기수정해야해
+                worker["TEL"],
                 style: const TextStyle(fontSize: 14, color: Colors.grey),
               ),
             ],
