@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../../../providers/sinmungo_provider.dart';
 import '../../../widgets/sinmungo/detail/detail_content_widget.dart';
 import '../../../widgets/sinmungo/detail/take_action_widget.dart';
+import '../../../widgets/header.dart';
 
 class SinmungoDetailScreen extends StatefulWidget {
   final int idx;
@@ -51,31 +52,32 @@ class _SinmungoDetailScreenState extends State<SinmungoDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final sinmungoDetail = Provider.of<SinmungoProvider>(context).sinmungoDetail;
+    final sinmungoDetail = Provider
+        .of<SinmungoProvider>(context)
+        .sinmungoDetail;
 
     return Scaffold(
       backgroundColor: const Color(0xFFF2F2F2),
-      appBar: AppBar(
-        backgroundColor: const Color(0xFFF2F2F2),
-        title: const Text('안전신문고 조회', style: TextStyle(color: Colors.black, fontSize: 17, fontWeight: FontWeight.bold)),
-        centerTitle: true,
-        elevation: 1,
-        iconTheme: const IconThemeData(color: Colors.black),
-      ),
       body: _isLoading || sinmungoDetail == null
           ? const Center(child: CircularProgressIndicator())
-          : SingleChildScrollView(
-        child: Column(
-          children: [
-            SinmungoDetailContentWidget(
-              sinmungo: sinmungoDetail,
-              imgList: List<Map<String, dynamic>>.from(sinmungoDetail['imgList'] ?? []),
+          : Column(
+        children: [
+          const Header(title: '안전신문고 조회', backgroundColor: Color(0xFFF2F2F2)),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  SinmungoDetailContentWidget(
+                    sinmungo: sinmungoDetail,
+                    imgList: List<Map<String, dynamic>>.from(
+                        sinmungoDetail['imgList'] ?? []),
+                  ),
+                  SinmungoTakeActionWidget(sinmungo: sinmungoDetail),
+                ],
+              ),
             ),
-            SinmungoTakeActionWidget(
-              sinmungo: sinmungoDetail,
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
