@@ -25,6 +25,14 @@
 - 환경변수 관리: flutter_dotenv
 - 애니메이션: flutter_animate
 
+## 📸 주요 화면 스크린샷
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/0b2dafe6-5b2c-4f54-a36a-499163da22c0" width="45%" />
+  <img src="https://github.com/user-attachments/assets/4590fa7d-ffd0-4bc9-8d02-9e92063895e8" width="45%" /><br>
+  <img src="https://github.com/user-attachments/assets/5953647a-dd19-4e82-8823-9945d371cc80" width="45%" />
+  <img src="https://github.com/user-attachments/assets/a740f5a6-4996-4a12-8bad-6487b0a548a4" width="45%" />
+</p>
+
 ## 🚀 빌드 및 실행
 
 ### Android
@@ -41,3 +49,5 @@ Dart SDK: ^3.7.0
 ## 🔒 환경설정
 assets/env/.env 파일에 개발/운영 서버 API 환경설정 관리
 
+
+⚠️ 해당 프로젝트는 학습/포트폴리오용으로 제작되었으며, 상업적 목적이 아닙니다.
